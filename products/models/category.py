@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -8,3 +9,8 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+    def clean(self):
+        if self.id == self.parent_id:
+            raise ValidationError("Category parent id must be different")
+        return super().clean()
