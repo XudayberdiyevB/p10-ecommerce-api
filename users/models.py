@@ -19,3 +19,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    @property
+    def full_name(self):
+        return self.get_full_name()
