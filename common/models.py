@@ -8,3 +8,11 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class TimestampModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True

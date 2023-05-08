@@ -72,3 +72,12 @@ class CustomTokenObtainPairSerializer(TokenObtainSerializer):
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField()
+
+
+class SendEmailVerificationCodeSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class CheckEmailVerificationCodeSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.CharField(min_length=6, max_length=6)
