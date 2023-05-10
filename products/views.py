@@ -1,32 +1,45 @@
+from django.db.models import Q
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
+from rest_framework.filters import OrderingFilter, SearchFilter
 
+from paginations import CustomPageNumberPagination
 from products.models import Product
 from products.serializers import ProductListSerializer, ProductCreateSerializer
 
 
 class ProductListCreateView(generics.ListCreateAPIView):
-    queryset = Product.objects.all()
-
-    # serializer_class = ProductListSerializer
+    queryset = Product.objects.order_by("-id")
+    filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
+    filterset_fields = ("category", "brand")
+    ordering_fields = ("id", "price")
+    search_fields = ("title", "category__title", "brand__title")
+    pagination_class = CustomPageNumberPagination
 
     def get_serializer_class(self):
         if self.request.method == "POST":
             return ProductCreateSerializer
         return ProductListSerializer
 
-    # def list(self, request, *args, **kwargs):
-    #     queryset = self.filter_queryset(self.get_queryset())
-    #     serializer = self.get_serializer(queryset, many=True)
-    #     return Response(serializer.data)
-
-
-# class ProductListView(generics.ListAPIView):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-#
-# class ProductCreateView(generics.CreateAPIView):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     query_params = self.request.query_params
+    #     search_param = query_params.get("search")
+    #     if search_param:
+    #         queryset = queryset.filter(
+    #             Q(title__icontains=search_param) | Q(category__title__icontains=search_param) | Q(
+    #                 title__icontains=search_param)
+    #         )
+    #     price_from = query_params.get("price_from")
+    #     price_to = query_params.get("price_to")
+    #     if price_from:
+    #         queryset = queryset.filter(price__gte=price_from)
+    #     if price_to:
+    #         queryset = queryset.filter(price__lte=price_to)
+    #     categories = query_params.get("categories")  # ?categories=1,2,3
+    #     if categories:
+    #         queryset = queryset.filter(category_id__in=[int(cat_id) for cat_id in categories.split(",")])
+    #     return queryset
 
 
 class ProductRetrieveView(generics.RetrieveAPIView):

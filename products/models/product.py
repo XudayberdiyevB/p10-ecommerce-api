@@ -8,7 +8,9 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     price = models.FloatField(default=0)
+    image = models.ImageField(upload_to="products", null=True)
     category = models.ForeignKey("common.Category", on_delete=models.CASCADE, related_name="products")
+    brand = models.ForeignKey("common.Brand", on_delete=models.CASCADE, related_name="products", null=True)
 
     def __str__(self):
         return self.title

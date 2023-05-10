@@ -10,6 +10,13 @@ class Category(models.Model):
         return self.title
 
 
+class Brand(models.Model):
+    title = models.CharField(max_length=255)
+    logo = models.ImageField(upload_to="brands")
+
+    def __str__(self):
+        return self.title
+
 class TimestampModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
