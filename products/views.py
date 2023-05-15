@@ -74,3 +74,5 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     #
     # def destroy(self, request, *args, **kwargs):
     #     return super().destroy(request, *args, **kwargs)
+
+
